@@ -235,8 +235,8 @@
         </div>
 
         <div class="chrome-actions">
-          <button type="button" class="btn btn-sm btn-secondary" id="openPopupColabBtn" title="បើកជាផ្ទាំង Popup Window មិនជាប់ Frame">
-            🪟 បើកជា App Window
+          <button type="button" class="btn btn-sm btn-primary" id="openPopupColabBtn" title="បើកជាផ្ទាំង App Window ស្គាល់ Google Login ស្រាប់ មិនបាច់ Login ឡើងវិញ">
+            🪟 បើកជា App Window (ស្គាល់ Login ស្រាប់)
           </button>
           <a 
             href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" 
@@ -244,6 +244,7 @@
             rel="noopener noreferrer" 
             class="btn btn-sm btn-colab" 
             id="openTabColabBtn"
+            title="បើកក្នុង Tab ថ្មី ស្គាល់ Google Login ស្រាប់"
           >
             🚀 បើកក្នុង Tab ថ្មី
           </a>
@@ -256,18 +257,24 @@
         </div>
       </div>
 
-      <!-- Iframe Security Helper & 1-Click Solutions -->
+      <!-- Iframe Login & Security Helper -->
       <div class="iframe-security-helper" id="iframeHelperBar">
         <div class="helper-text">
-          ⚡ <strong>កំពុង View Google Colab ពិតប្រាកដ (Live Google Session)៖</strong><br>
-          ប្រសិនបើ Browser បង្ហាញ <em>"refused to connect"</em> ដោយសារ Google Security សូមចុច <strong>[🪟 បើកជា App Window]</strong> (ដំណើរការ ១០០%) ឬដំឡើង Extension <strong>Ignore X-Frame-Headers</strong> លើ Chrome ដើម្បីឱ្យ Colab បង្ហាញក្នុងនេះផ្ទាល់!
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span style="font-size:1.1rem;">⚠️</span>
+            <strong style="color:#fbbf24; font-size:0.88rem;">ហេតុអ្វីពេលចុច Run ក្នុង Frame វាទាមទារ Login?</strong>
+          </div>
+          <p style="margin:0; font-size:0.82rem; color:#cbd5e1; line-height:1.5;">
+            នៅក្នុង Iframe (ការបង្កប់លើ Website ក្រៅ) Browser បានបិទ Third-Party Cookies ដូច្នេះ Google មិនស្គាល់ Account របស់អ្នកឡើយ។<br>
+            👉 <strong>ដំណោះស្រាយងាយស្រួលបំផុត៖</strong> ចុចប៊ូតុង <strong>[🪟 បើកជា App Window]</strong> ឬ <strong>[🚀 បើកក្នុង Tab ថ្មី]</strong> នោះ Colab នឹង <strong>ស្គាល់ Google Login របស់អ្នកស្រាប់តែម្ដង (មិនបាច់ Login ឡើងវិញទេ)</strong> ហើយអាចចុច Run GPU បានភ្លាមៗ!
+          </p>
         </div>
         <div class="helper-actions">
-          <button type="button" class="btn btn-sm btn-primary" id="openAppWindowBtn">
-            🪟 បើកជា Real App Window (១០០% ដំណើរការ)
+          <button type="button" class="btn btn-primary" id="openAppWindowBtn" style="font-size:0.85rem; padding:8px 16px;">
+            🪟 បើកជា App Window (Run ភ្លាមៗ មិនបាច់ Login)
           </button>
-          <a href="https://chromewebstore.google.com/detail/ignore-x-frame-headers/gleekbfimigapmdooioggjaigmagedbm" target="_blank" rel="noopener noreferrer" class="btn-ext">
-            🧩 ដំឡើង Chrome Extension (ដោះសោ Iframe)
+          <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-colab" style="font-size:0.85rem; padding:8px 16px;">
+            🚀 បើកក្នុង Tab ថ្មី
           </a>
         </div>
       </div>
