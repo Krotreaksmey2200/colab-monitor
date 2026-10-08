@@ -658,6 +658,78 @@ if (injectKeepAliveBtn) {
   });
 }
 
+// =========================================================================
+// 10. GOOGLE COLAB EMBEDDED WEBVIEW CONTROLLER
+// =========================================================================
+
+const webviewContainer = document.getElementById("webviewContainer");
+const colabIframe = document.getElementById("colabIframe");
+const colabUrlInput = document.getElementById("colabUrlInput");
+const loadColabUrlBtn = document.getElementById("loadColabUrlBtn");
+const openPopupColabBtn = document.getElementById("openPopupColabBtn");
+const openTabColabBtn = document.getElementById("openTabColabBtn");
+const copyColabUrlBtn = document.getElementById("copyColabUrlBtn");
+const toggleFullscreenBtn = document.getElementById("toggleFullscreenBtn");
+
+function refreshColabIframe() {
+  const url = colabUrlInput.value.trim();
+  if (url) {
+    colabIframe.src = url;
+    if (openTabColabBtn) openTabColabBtn.href = url;
+    appendLog(`🌐 កំពុងផ្ទុក Colab URL ឡើងវិញ: ${url.slice(0, 45)}...`, "info");
+  }
+}
+
+if (loadColabUrlBtn) {
+  loadColabUrlBtn.addEventListener("click", refreshColabIframe);
+}
+
+if (colabUrlInput) {
+  colabUrlInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") refreshColabIframe();
+  });
+}
+
+if (openPopupColabBtn) {
+  openPopupColabBtn.addEventListener("click", () => {
+    const url = colabUrlInput ? colabUrlInput.value.trim() : "https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing";
+    window.open(url, "GoogleColabApp", "width=1280,height=850,menubar=no,status=no,toolbar=no,location=yes,scrollbars=yes,resizable=yes");
+    appendLog("🪟 បានបើក Colab ជាផ្ទាំង Popup App ដាច់ដោយឡែក!", "success");
+  });
+}
+
+if (copyColabUrlBtn) {
+  copyColabUrlBtn.addEventListener("click", () => {
+    const url = colabUrlInput ? colabUrlInput.value.trim() : "";
+    navigator.clipboard.writeText(url).then(() => {
+      copyColabUrlBtn.innerText = "✅ Copied!";
+      setTimeout(() => {
+        copyColabUrlBtn.innerText = "📋 Copy Link";
+      }, 2000);
+      appendLog("📋 បានចម្លង Colab Link ចូល clipboard!", "success");
+    });
+  });
+}
+
+if (toggleFullscreenBtn && webviewContainer) {
+  toggleFullscreenBtn.addEventListener("click", () => {
+    webviewContainer.classList.toggle("fullscreen");
+    if (webviewContainer.classList.contains("fullscreen")) {
+      toggleFullscreenBtn.innerText = "❌ ចាកចេញពីពេញអេក្រង់";
+    } else {
+      toggleFullscreenBtn.innerText = "⛶ ពេញអេក្រង់";
+    }
+  });
+
+  // ESC key to exit fullscreen
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && webviewContainer.classList.contains("fullscreen")) {
+      webviewContainer.classList.remove("fullscreen");
+      toggleFullscreenBtn.innerText = "⛶ ពេញអេក្រង់";
+    }
+  });
+}
+
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
   updateScript(60);
@@ -675,4 +747,5 @@ window.addEventListener("DOMContentLoaded", () => {
   toggleSoundBtn.addEventListener("click", toggleAudio);
   appendLog("🚀 Colab Keeper Dashboard ដំណើរការជោគជ័យ!", "success");
 });
+
 

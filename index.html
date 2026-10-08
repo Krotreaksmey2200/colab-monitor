@@ -88,7 +88,7 @@
                 <span class="tag">T4/V100/A100</span>
               </div>
               <div class="item-actions">
-                <a href="https://colab.research.google.com/github/Krotreaksmey2200/colab-monitor/blob/main/fine_tuning_kh_30epoch.ipynb" target="_blank" rel="noopener noreferrer" class="btn btn-colab">
+                <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-colab">
                   🚀 បើកលើ Google Colab
                 </a>
                 <a href="fine_tuning_kh_30epoch.ipynb" download="fine_tuning_kh_30epoch.ipynb" class="btn btn-secondary">
@@ -172,7 +172,7 @@
 
             <!-- Action buttons for uploaded notebook -->
             <div class="uploaded-actions-grid">
-              <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener noreferrer" class="btn btn-colab" id="openInColabBtn">
+              <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-colab" id="openInColabBtn">
                 🚀 បើកក្នុង Google Colab
               </a>
               <button type="button" class="btn btn-primary" id="injectKeepAliveBtn" title="ចាក់បញ្ចូល Code កុំឱ្យដាច់ 24H ទៅក្នុង Cell ទីមួយ">
@@ -196,6 +196,77 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMBEDDED GOOGLE COLAB WEBVIEW SECTION -->
+  <section class="colab-webview-section">
+    <div class="webview-container" id="webviewContainer">
+      <!-- Browser-like Top Chrome Bar -->
+      <div class="browser-chrome-bar">
+        <div class="window-dots">
+          <span class="dot red" title="Close"></span>
+          <span class="dot yellow" title="Minimize"></span>
+          <span class="dot green" title="Maximize"></span>
+        </div>
+
+        <div class="browser-address-bar">
+          <span class="address-icon">🔒</span>
+          <input 
+            type="text" 
+            id="colabUrlInput" 
+            class="address-input" 
+            value="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" 
+            placeholder="បញ្ចូល Colab URL..."
+            title="Google Colab Notebook URL"
+          >
+          <button type="button" class="btn btn-sm btn-outline" id="loadColabUrlBtn" title="ផ្ទុក URL ឡើងវិញ">🔄 ផ្ទុកឡើង</button>
+        </div>
+
+        <div class="chrome-actions">
+          <button type="button" class="btn btn-sm btn-secondary" id="openPopupColabBtn" title="បើកជាផ្ទាំង Popup Window មិនជាប់ Frame">
+            🪟 បើកជា Popup App
+          </button>
+          <a 
+            href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="btn btn-sm btn-colab" 
+            id="openTabColabBtn"
+          >
+            🚀 បើកក្នុង Tab ថ្មី
+          </a>
+          <button type="button" class="btn btn-sm btn-outline" id="copyColabUrlBtn" title="ចម្លង Link Colab">
+            📋 Copy Link
+          </button>
+          <button type="button" class="btn btn-sm btn-outline" id="toggleFullscreenBtn" title="ពង្រីកពេញអេក្រង់">
+            ⛶ ពេញអេក្រង់
+          </button>
+        </div>
+      </div>
+
+      <!-- Helper Notice Bar -->
+      <div class="webview-banner-hint">
+        <div class="banner-left">
+          <span>⚡ <strong>Colab Live Workspace:</strong> កំពុងភ្ជាប់ទៅកាន់ Colab Notebook របស់អ្នក។</span>
+        </div>
+        <div class="banner-right">
+          <span>💡 ប្រសិនបើ Google រារាំង Frame: ចុច <strong>[🪟 បើកជា Popup App]</strong> ដើម្បីដំណើរការស្របគ្នាជាមួយ Keep-Alive 24H!</span>
+        </div>
+      </div>
+
+      <!-- Webview Body / IFrame -->
+      <div class="webview-body">
+        <iframe 
+          id="colabIframe"
+          class="webview-iframe"
+          src="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing"
+          title="Google Colab Live Workspace"
+          allow="clipboard-write; clipboard-read; camera; microphone; fullscreen; geolocation"
+          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"
+          loading="lazy"
+        ></iframe>
       </div>
     </div>
   </section>
