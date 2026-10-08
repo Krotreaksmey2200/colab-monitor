@@ -761,6 +761,44 @@ if (colabRunAllBtn) {
   });
 }
 
+// Mode Switching (Real Iframe vs Interactive Replica)
+const modeIframeBtn = document.getElementById("modeIframeBtn");
+const modeReplicaBtn = document.getElementById("modeReplicaBtn");
+const realColabIframeView = document.getElementById("realColabIframeView");
+const replicaColabView = document.getElementById("replicaColabView");
+const iframeHelperBar = document.getElementById("iframeHelperBar");
+const openAppWindowBtn = document.getElementById("openAppWindowBtn");
+
+function switchColabMode(mode) {
+  if (mode === "iframe") {
+    if (modeIframeBtn) modeIframeBtn.classList.add("active");
+    if (modeReplicaBtn) modeReplicaBtn.classList.remove("active");
+    if (realColabIframeView) realColabIframeView.style.display = "block";
+    if (replicaColabView) replicaColabView.style.display = "none";
+    if (iframeHelperBar) iframeHelperBar.style.display = "flex";
+    appendLog("🌐 បានប្តូរទៅកាន់ Mode: Live Colab Iframe ពិតប្រាកដ", "info");
+  } else {
+    if (modeReplicaBtn) modeReplicaBtn.classList.add("active");
+    if (modeIframeBtn) modeIframeBtn.classList.remove("active");
+    if (realColabIframeView) realColabIframeView.style.display = "none";
+    if (replicaColabView) replicaColabView.style.display = "flex";
+    if (iframeHelperBar) iframeHelperBar.style.display = "none";
+    appendLog("📱 បានប្តូរទៅកាន់ Mode: Interactive Colab Replica", "info");
+  }
+}
+
+if (modeIframeBtn) modeIframeBtn.addEventListener("click", () => switchColabMode("iframe"));
+if (modeReplicaBtn) modeReplicaBtn.addEventListener("click", () => switchColabMode("replica"));
+
+function openColabAsApp() {
+  const url = colabUrlInput ? colabUrlInput.value.trim() : "https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing";
+  window.open(url, "GoogleColabLiveApp", "width=1280,height=850,menubar=no,status=no,toolbar=no,location=yes,scrollbars=yes,resizable=yes");
+  appendLog("🪟 បានបើក Colab ជា Real App Window ដាច់ដោយឡែក (ដំណើរការ ១០០%)!", "success");
+}
+
+if (openAppWindowBtn) openAppWindowBtn.addEventListener("click", openColabAsApp);
+window.openColabAsApp = openColabAsApp;
+
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
   updateScript(60);

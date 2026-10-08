@@ -224,9 +224,19 @@
           <button type="button" class="btn btn-sm btn-outline" id="loadColabUrlBtn" title="ផ្ទុក URL ឡើងវិញ">🔄 ផ្ទុកឡើង</button>
         </div>
 
+        <!-- Mode Toggle Tabs -->
+        <div class="view-mode-tabs">
+          <button type="button" class="tab-btn active" id="modeIframeBtn" title="View ផ្ទាំង Colab ពិតប្រាកដក្នុង Iframe">
+            🌐 Live Colab (ពិតប្រាកដ)
+          </button>
+          <button type="button" class="tab-btn" id="modeReplicaBtn" title="View ផ្ទាំងត្រាប់តាម Colab ដោយមិនជាប់ Block">
+            📱 Interactive Replica
+          </button>
+        </div>
+
         <div class="chrome-actions">
           <button type="button" class="btn btn-sm btn-secondary" id="openPopupColabBtn" title="បើកជាផ្ទាំង Popup Window មិនជាប់ Frame">
-            🪟 បើកជា Popup App
+            🪟 បើកជា App Window
           </button>
           <a 
             href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" 
@@ -246,19 +256,39 @@
         </div>
       </div>
 
-      <!-- Helper Notice Bar -->
-      <div class="webview-banner-hint">
-        <div class="banner-left">
-          <span>⚡ <strong>Colab Live Workspace:</strong> កំពុងភ្ជាប់ទៅកាន់ Colab Notebook របស់អ្នក។</span>
+      <!-- Iframe Security Helper & 1-Click Solutions -->
+      <div class="iframe-security-helper" id="iframeHelperBar">
+        <div class="helper-text">
+          ⚡ <strong>កំពុង View Google Colab ពិតប្រាកដ (Live Google Session)៖</strong><br>
+          ប្រសិនបើ Browser បង្ហាញ <em>"refused to connect"</em> ដោយសារ Google Security សូមចុច <strong>[🪟 បើកជា App Window]</strong> (ដំណើរការ ១០០%) ឬដំឡើង Extension <strong>Ignore X-Frame-Headers</strong> លើ Chrome ដើម្បីឱ្យ Colab បង្ហាញក្នុងនេះផ្ទាល់!
         </div>
-        <div class="banner-right">
-          <span>💡 ប្រសិនបើ Google រារាំង Frame: ចុច <strong>[🪟 បើកជា Popup App]</strong> ដើម្បីដំណើរការស្របគ្នាជាមួយ Keep-Alive 24H!</span>
+        <div class="helper-actions">
+          <button type="button" class="btn btn-sm btn-primary" id="openAppWindowBtn">
+            🪟 បើកជា Real App Window (១០០% ដំណើរការ)
+          </button>
+          <a href="https://chromewebstore.google.com/detail/ignore-x-frame-headers/gleekbfimigapmdooioggjaigmagedbm" target="_blank" rel="noopener noreferrer" class="btn-ext">
+            🧩 ដំឡើង Chrome Extension (ដោះសោ Iframe)
+          </a>
         </div>
       </div>
 
-      <!-- Webview Body / Authentic Google Colab Interactive Simulator -->
+      <!-- Webview Body / Dual Views (Real Iframe & Authentic Interactive Simulator) -->
       <div class="webview-body">
-        <div class="colab-simulator">
+        <!-- View A: Real Google Colab Iframe -->
+        <div id="realColabIframeView" style="width: 100%; height: 100%;">
+          <iframe 
+            id="colabIframe"
+            class="webview-iframe-view"
+            src="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing"
+            title="Google Colab Live Workspace"
+            allow="clipboard-write; clipboard-read; camera; microphone; fullscreen; geolocation"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <!-- View B: Authentic Google Colab Interactive Simulator (Initially hidden) -->
+        <div class="colab-simulator" id="replicaColabView" style="display: none;">
           <!-- Colab Top Bar -->
           <div class="colab-top-nav">
             <div class="colab-nav-left">
