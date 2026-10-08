@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colab Anti-Disconnect & Live OCR Training Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <header class="app-header">
+    <div class="logo-group">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke="#f59e0b" stroke-dasharray="4 2"/>
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#f59e0b" stroke="#d97706"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="logo-title">Colab Keeper <span class="badge-pro">PRO 24H</span></h1>
+        <p class="logo-sub">ឧបករណ៍ការពារកុំឱ្យដាច់ Google Colab & តាមដានការបង្វឹក OCR</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="connection-status" id="connectionStatus">
+        <span class="status-pulse"></span>
+        <span class="status-text" id="statusLabel">ប្រព័ន្ធត្រៀមខ្លួនជាស្រេច (Ready)</span>
+      </div>
+      <button class="btn btn-secondary" id="toggleSoundBtn" title="បើក/បិទ Background Audio ដើម្បីកុំឱ្យ Browser គេង">
+        <span id="audioIcon">🔊</span> Keep-Alive Audio: <span id="audioState">ON</span>
+      </button>
+      <button class="btn btn-primary" id="wakeLockBtn">
+        <span id="wakeLockIcon">🛡️</span> Screen Wake Lock: <span id="wakeLockState">OFF</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    <!-- LEFT PANEL: KEEP-ALIVE TOOLS -->
+    <section class="card panel-keepalive">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-icon">⚡</span>
+          <div>
+            <h2 class="card-title">វិធីសាស្ត្រ Keep-Alive លើ Colab</h2>
+            <p class="card-desc">ជ្រើសរើសវិធីការពារកុំឱ្យ Google Colab ដាច់ Connection</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookmarklet Quick Tool -->
+      <div class="subcard bookmarklet-box">
+        <div class="bookmarklet-header">
+          <span class="step-num">វិធីទី ១</span>
+          <h3>អូសប៊ូតុងនេះទៅដាក់លើ Bookmark Bar (ងាយស្រួលបំផុត)</h3>
+        </div>
+        <p class="text-muted">
+          គ្រាន់តែអូស (Drag & Drop) ប៊ូតុងពណ៌លឿងខាងក្រោម ទៅដាក់លើ <strong>Bookmarks Bar</strong> នៃ Google Chrome។ ពេលអ្នកបើក Colab គ្រាន់តែចុចលើ Bookmark នេះ វានឹងដំណើរការការពារស្វ័យប្រវត្តិតែម្ដង!
+        </p>
+        <div class="bookmarklet-drag-area">
+          <a class="bookmarklet-btn" id="bookmarkletLink" href="javascript:(function(){let%20count=0;const%20notify=document.createElement('div');notify.style.cssText='position:fixed;top:10px;right:10px;z-index:999999;background:%2310b981;color:%23fff;padding:8px%2014px;border-radius:8px;font-family:sans-serif;font-size:13px;box-shadow:0%204px%2012px%20rgba(0,0,0,0.3);font-weight:bold;';notify.innerText='%E2%9A%A1%20Colab%20Keep-Alive%20Active!';document.body.appendChild(notify);setInterval(function(){const%20btn=document.querySelector('colab-connect-button')||document.querySelector('%23connect')||document.querySelector('colab-toolbar-button');if(btn){btn.click();count++;notify.innerText='%E2%9A%A1%20Active%20('+count+'%20pings)';}},60000);console.log('Colab%20Keep-Alive%20Started!');})();">
+            ⚡ Colab Keep-Alive (អូសខ្ញុំដាក់លើ Bookmark)
+          </a>
+        </div>
+      </div>
+
+      <!-- Console Script Copy Box -->
+      <div class="subcard script-box">
+        <div class="script-header">
+          <div>
+            <span class="step-num">វិធីទី ២</span>
+            <h3>Console Script (សម្រាប់ Paste ក្នុង Inspect F12)</h3>
+          </div>
+          <div class="interval-picker">
+            <label for="intervalSelect">Interval:</label>
+            <select id="intervalSelect">
+              <option value="30">30 វិនាទី</option>
+              <option value="60" selected>60 វិនាទី (ណែនាំ)</option>
+              <option value="120">120 វិនាទី</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="code-container">
+          <pre><code id="scriptCodeBlock">// Colab Auto Anti-Disconnect Script
+function keepAlive() {
+  const btn = document.querySelector("colab-connect-button") 
+           || document.querySelector("#connect")
+           || document.querySelector("paper-button#connect");
+  if (btn) {
+    btn.click();
+    console.log("⚡ [" + new Date().toLocaleTimeString() + "] Colab pinged successfully!");
+  }
+}
+setInterval(keepAlive, 60000);
+console.log("🛡️ Colab Keep-Alive 24H is running!");</code></pre>
+          <button class="btn btn-copy" id="copyScriptBtn">
+            <span id="copyIcon">📋</span> ចម្លងកូដ (Copy)
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Heartbeat Simulator -->
+      <div class="subcard simulator-box">
+        <div class="sim-header">
+          <div class="pulse-indicator">
+            <span class="pulse-ring"></span>
+            <span class="pulse-dot"></span>
+          </div>
+          <div>
+            <h3>ប្រព័ន្ធបញ្ជូនសញ្ញាការពារ Browser គេង (Live Pinger)</h3>
+            <p class="text-muted" id="pingStats">ដំណើរការបាន: 0 នាទី | Pings: 0 ដង</p>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="pingerBar" style="width: 0%;"></div>
+        </div>
+        <div class="sim-actions">
+          <button class="btn btn-sm btn-outline" id="sendTestPingBtn">🚀 សាកល្បង Ping ឥឡូវ</button>
+          <button class="btn btn-sm btn-outline" id="clearLogBtn">🗑️ សម្អាត Log</button>
+        </div>
+        <div class="console-log" id="consoleLog">
+          <div class="log-line info">[18:12:00] ប្រព័ន្ធ Colab Keeper បានចាប់ផ្ដើមដំណើរការ...</div>
+          <div class="log-line success">[18:12:00] Wake Lock & Audio Loop បានត្រៀមរួចជាស្រេច!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: TRAINING DASHBOARD & TELEMETRY -->
+    <section class="card panel-telemetry">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-icon">📊</span>
+          <div>
+            <h2 class="card-title">ផ្ទាំងតាមដានការបង្វឹក OCR (Live Telemetry)</h2>
+            <p class="card-desc">បង្ហាញ Epoch, Loss, CER, និងលទ្ធផលសាកល្បងជាក់ស្ដែង</p>
+          </div>
+        </div>
+        <div class="demo-switch">
+          <label class="switch-label">
+            <input type="checkbox" id="liveSimToggle" checked>
+            <span class="slider"></span>
+            <span class="switch-text">Simulate Live 30-Epoch</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Metrics Row -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">EPOCH បច្ចុប្បន្ន</span>
+          <div class="metric-value" id="currentEpochVal">08 <span class="metric-sub">/ 30</span></div>
+          <div class="metric-bar-bg">
+            <div class="metric-bar-fill" id="epochProgressFill" style="width: 26.6%;"></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-label">CHARACTER ERROR (CER)</span>
+          <div class="metric-value accent-green" id="currentCerVal">1.42%</div>
+          <span class="metric-sub text-success">📉 ធ្លាក់ចុះល្អ (Low Error)</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-label">TRAIN LOSS</span>
+          <div class="metric-value accent-blue" id="currentLossVal">0.134</div>
+          <span class="metric-sub" id="valLossSub">Val Loss: 0.168</span>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-label">CHECKPOINT SAVE</span>
+          <div class="metric-value accent-amber" id="savedCountVal">8 <span class="metric-sub">Checkpoints</span></div>
+          <span class="metric-sub text-amber">💾 Saved in Drive</span>
+        </div>
+      </div>
+
+      <!-- Visual Charts -->
+      <div class="charts-container">
+        <div class="chart-box">
+          <div class="chart-header">
+            <h4>📉 ក្រាហ្វិក Loss Curve (Train & Validation)</h4>
+            <span class="badge-mini">30 Epochs</span>
+          </div>
+          <canvas id="lossCanvas" width="450" height="180"></canvas>
+        </div>
+        <div class="chart-box">
+          <div class="chart-header">
+            <h4>🎯 ក្រាហ្វិក Character Error Rate - CER (%)</h4>
+            <span class="badge-mini text-success">Target &lt; 2%</span>
+          </div>
+          <canvas id="cerCanvas" width="450" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Sample Recognition Inspection -->
+      <div class="subcard preview-box">
+        <div class="preview-header">
+          <h4>🔍 គំរូអត្ថបទដែលម៉ូដែលអានបាន (Latest Sample Prediction)</h4>
+          <span class="badge-tag" id="sampleClassTag">Khmer & Math</span>
+        </div>
+        <div class="sample-display">
+          <div class="sample-img-container">
+            <canvas id="sampleImgCanvas" width="280" height="70"></canvas>
+          </div>
+          <div class="sample-text-results">
+            <div class="text-row">
+              <span class="text-tag gt">Ground Truth:</span>
+              <span class="text-content" id="gtText">គណនាកន្សោម $f(x) = 2x^2 + 5$</span>
+            </div>
+            <div class="text-row">
+              <span class="text-tag pred">Prediction:</span>
+              <span class="text-content highlight-match" id="predText">គណនាកន្សោម $f(x) = 2x^2 + 5$</span>
+            </div>
+            <div class="accuracy-badge">
+              <span>ភាពត្រឹមត្រូវ: <strong id="matchPct">100% (Match)</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colab Webhook Helper Code -->
+      <div class="webhook-snippet">
+        <details>
+          <summary>🔗 របៀបភ្ជាប់ Colab ឱ្យផ្ញើទិន្នន័យមកកាន់ Website នេះដោយផ្ទាល់</summary>
+          <div class="webhook-body">
+            <p class="text-muted">
+              បន្ថែមអនុគមន៍ខ្លីនេះក្នុង Training Loop នៃ Colab ដើម្បីឱ្យវាបាញ់ Live Metrics មកកាន់ Dashboard នេះ៖
+            </p>
+            <pre><code>import requests
+def notify_dashboard(epoch, train_loss, val_loss, val_cer):
+    try:
+        requests.post("http://YOUR_SERVER_OR_NGROK/api/update", json={
+            "epoch": epoch, "train_loss": train_loss,
+            "val_loss": val_loss, "val_cer": val_cer
+        }, timeout=2)
+    except Exception: pass</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- Audio element for background wake lock -->
+  <audio id="silentAudio" loop preload="auto">
+    <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==" type="audio/wav">
+  </audio>
+
+  <footer class="app-footer">
+    <p>🇰🇭 <strong>Khmer & Math PARSeq OCR Keeper</strong> — បង្កើតឡើងដើម្បីជួយការពារការដាច់ Google Colab និងតាមដានដំណើរការបង្វឹក ២៤ ម៉ោង។</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
