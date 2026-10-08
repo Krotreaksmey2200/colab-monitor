@@ -43,6 +43,163 @@
     </div>
   </header>
 
+  <!-- NOTEBOOK HUB & COLAB UPLOADER SECTION -->
+  <section class="notebook-hub-section">
+    <div class="hub-container">
+      <div class="hub-header">
+        <div class="hub-title-group">
+          <span class="hub-badge">⚡ Colab & Kaggle Notebook Hub</span>
+          <h2 class="hub-title">📂 កន្លែង Upload & បើកឯកសារ Colab Notebook (.ipynb)</h2>
+          <p class="hub-subtitle">
+            ទាញយក Notebook ដែលបានរៀបចំរួចជាស្រេច (Official OCR Fine-tuning) ឬ <strong>Upload ឯកសារ <code>.ipynb</code> ផ្ទាល់ខ្លួន</strong> ដើម្បីចាក់បញ្ចូល Keep-Alive Script ការពារកុំឱ្យដាច់ 24H និងចុចបើកលើ Google Colab ភ្លាមៗ!
+          </p>
+        </div>
+      </div>
+
+      <div class="hub-grid">
+        <!-- Col 1: Ready-Made Official Notebooks -->
+        <div class="hub-card">
+          <div class="hub-card-header">
+            <div class="icon-title">
+              <span class="hub-card-icon">⚡</span>
+              <div>
+                <h3>ឯកសារផ្លូវការដែលត្រៀមរួចជាស្រេច (Ready to Run)</h3>
+                <p class="text-muted">បានតេស្តដំណើរការ ១០០% លើ Colab GPU និង Kaggle T4</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="notebook-items">
+            <!-- Item 1: Colab -->
+            <div class="notebook-item-card">
+              <div class="notebook-item-top">
+                <div class="item-name-group">
+                  <span class="platform-badge colab-badge">Google Colab</span>
+                  <h4>fine_tuning_kh_30epoch.ipynb</h4>
+                </div>
+                <span class="file-size-tag">~45 KB</span>
+              </div>
+              <p class="item-desc">
+                ម៉ូដែល Khmer & Math PARSeq Fine-tuning 30 Epochs ជាមួយ LoRA, Auto-Resume Checkpoint ពី Google Drive, និង Auto-Merge ឯកសារ PyTorch ចុងក្រោយ។
+              </p>
+              <div class="item-tags">
+                <span class="tag">LoRA (Rank 16)</span>
+                <span class="tag">Auto-Resume</span>
+                <span class="tag">T4/V100/A100</span>
+              </div>
+              <div class="item-actions">
+                <a href="https://colab.research.google.com/github/Krotreaksmey2200/colab-monitor/blob/main/fine_tuning_kh_30epoch.ipynb" target="_blank" rel="noopener noreferrer" class="btn btn-colab">
+                  🚀 បើកលើ Google Colab
+                </a>
+                <a href="fine_tuning_kh_30epoch.ipynb" download="fine_tuning_kh_30epoch.ipynb" class="btn btn-secondary">
+                  📥 ទាញយក (.ipynb)
+                </a>
+              </div>
+            </div>
+
+            <!-- Item 2: Kaggle -->
+            <div class="notebook-item-card">
+              <div class="notebook-item-top">
+                <div class="item-name-group">
+                  <span class="platform-badge kaggle-badge">Kaggle GPU</span>
+                  <h4>fine_tuning_kh_30epoch_kaggle.ipynb</h4>
+                </div>
+                <span class="file-size-tag">~44 KB</span>
+              </div>
+              <p class="item-desc">
+                កំណត់សម្រាប់ Kaggle Dual T4/P100: បានជួសជុលកំហុស Batch Tensor Generator និងប្រើ PyTorch 2.x Autocast Standard ដំណើរការលឿនរហ័ស។
+              </p>
+              <div class="item-tags">
+                <span class="tag">Kaggle 2xT4</span>
+                <span class="tag">Batch Generator Fix</span>
+                <span class="tag">Save Checkpoints</span>
+              </div>
+              <div class="item-actions">
+                <a href="https://www.kaggle.com/code" target="_blank" rel="noopener noreferrer" class="btn btn-kaggle">
+                  🌐 ចូលទៅ Kaggle Kernels
+                </a>
+                <a href="fine_tuning_kh_30epoch_kaggle.ipynb" download="fine_tuning_kh_30epoch_kaggle.ipynb" class="btn btn-secondary">
+                  📥 ទាញយក (.ipynb)
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: Interactive Upload & Injection Station -->
+        <div class="hub-card">
+          <div class="hub-card-header">
+            <div class="icon-title">
+              <span class="hub-card-icon">📤</span>
+              <div>
+                <h3>Upload & កែសម្រួល Colab File (.ipynb) ផ្ទាល់ខ្លួន</h3>
+                <p class="text-muted">អូសទម្លាក់ឯកសារ ឬ Upload ដើម្បីចាក់បញ្ចូល Keep-Alive និងបើកក្នុង Colab</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Drop Zone -->
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="colabFileInput" accept=".ipynb,application/json" style="display:none;">
+            <div class="drop-zone-content">
+              <div class="drop-icon">📁</div>
+              <h4>អូស និងទម្លាក់ឯកសារ Colab (.ipynb) នៅទីនេះ</h4>
+              <p class="text-muted">ឬចុចលើប៊ូតុងខាងក្រោមដើម្បីជ្រើសរើសពីកុំព្យូទ័រ</p>
+              <button type="button" class="btn btn-primary" id="browseFileBtn">
+                📂 ជ្រើសរើសឯកសារ .ipynb
+              </button>
+              <span class="drop-hint">គាំទ្រឯកសារ Jupyter Notebook (*.ipynb) គ្រប់ប្រភេទ</span>
+            </div>
+          </div>
+
+          <!-- File Details & Tools Panel (Shown after upload) -->
+          <div class="uploaded-panel" id="uploadedPanel" style="display:none;">
+            <div class="uploaded-header">
+              <div class="uploaded-file-meta">
+                <span class="file-format-badge">IPYNB</span>
+                <div>
+                  <h4 class="uploaded-filename" id="uploadedFileName">my_colab_notebook.ipynb</h4>
+                  <div class="meta-sub" id="uploadedFileStats">ទំហំ: 42 KB | កោសិកាសរុប: 12 Cells</div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline" id="removeUploadedFileBtn">❌ ប្ដូរឯកសារ</button>
+            </div>
+
+            <!-- Detected libraries/features -->
+            <div class="detected-tags-row" id="detectedTagsRow">
+              <span class="detect-tag">⚡ Ready</span>
+            </div>
+
+            <!-- Action buttons for uploaded notebook -->
+            <div class="uploaded-actions-grid">
+              <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener noreferrer" class="btn btn-colab" id="openInColabBtn">
+                🚀 បើកក្នុង Google Colab
+              </a>
+              <button type="button" class="btn btn-primary" id="injectKeepAliveBtn" title="ចាក់បញ្ចូល Code កុំឱ្យដាច់ 24H ទៅក្នុង Cell ទីមួយ">
+                🛡️ បញ្ចូល Keep-Alive + ទាញយក
+              </button>
+              <button type="button" class="btn btn-secondary" id="toggleCellViewerBtn">
+                👁️ មើលកោសិកាកូដ (<span id="cellCountBadge">0</span>)
+              </button>
+              <button type="button" class="btn btn-secondary" id="copyAllCodeBtn">
+                📋 ចម្លងកូដទាំងអស់
+              </button>
+            </div>
+
+            <!-- Cell Viewer Accordion -->
+            <div class="notebook-cells-viewer" id="notebookCellsViewer" style="display:none;">
+              <div class="cells-header">
+                <span>បញ្ជីកោសិកាកូដ (Code & Markdown Cells)</span>
+                <button type="button" class="btn btn-sm btn-outline" id="collapseCellsBtn">បិទផ្ទាំង</button>
+              </div>
+              <div class="cells-list" id="cellsListContainer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <main class="dashboard-grid">
     <!-- LEFT PANEL: KEEP-ALIVE TOOLS -->
     <section class="card panel-keepalive">

@@ -381,9 +381,282 @@ setInterval(() => {
     drawLossChart();
     drawCerChart();
 
-    appendLog(`📈 [Epoch ${simEpoch:02d}/30] Auto-Checkpoint Saved! Val CER: ${cer.toFixed(2)}%`, "success");
+    appendLog(`📈 [Epoch ${String(simEpoch).padStart(2, '0')}/30] Auto-Checkpoint Saved! Val CER: ${cer.toFixed(2)}%`, "success");
   }
 }, 15000);
+
+// =========================================================================
+// 9. COLAB NOTEBOOK UPLOADER & KEEP-ALIVE INJECTOR
+// =========================================================================
+
+let currentNotebookData = null;
+let currentNotebookFilename = "";
+
+const dropZone = document.getElementById("dropZone");
+const colabFileInput = document.getElementById("colabFileInput");
+const browseFileBtn = document.getElementById("browseFileBtn");
+const uploadedPanel = document.getElementById("uploadedPanel");
+const uploadedFileName = document.getElementById("uploadedFileName");
+const uploadedFileStats = document.getElementById("uploadedFileStats");
+const removeUploadedFileBtn = document.getElementById("removeUploadedFileBtn");
+const detectedTagsRow = document.getElementById("detectedTagsRow");
+const injectKeepAliveBtn = document.getElementById("injectKeepAliveBtn");
+const toggleCellViewerBtn = document.getElementById("toggleCellViewerBtn");
+const copyAllCodeBtn = document.getElementById("copyAllCodeBtn");
+const cellCountBadge = document.getElementById("cellCountBadge");
+const notebookCellsViewer = document.getElementById("notebookCellsViewer");
+const cellsListContainer = document.getElementById("cellsListContainer");
+const collapseCellsBtn = document.getElementById("collapseCellsBtn");
+
+if (browseFileBtn && colabFileInput) {
+  browseFileBtn.addEventListener("click", () => colabFileInput.click());
+  dropZone.addEventListener("click", (e) => {
+    if (e.target !== browseFileBtn) colabFileInput.click();
+  });
+
+  // Drag and drop events
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleNotebookFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  colabFileInput.addEventListener("change", (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleNotebookFile(e.target.files[0]);
+    }
+  });
+}
+
+function handleNotebookFile(file) {
+  if (!file.name.endsWith(".ipynb") && !file.name.endsWith(".json")) {
+    alert("⚠️ សូមជ្រើសរើសឯកសារ Jupyter Notebook (.ipynb)");
+    return;
+  }
+
+  currentNotebookFilename = file.name;
+  const fileSizeKB = (file.size / 1024).toFixed(1);
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const nb = JSON.parse(event.target.result);
+      if (!nb.cells || !Array.isArray(nb.cells)) {
+        throw new Error("ទម្រង់ឯកសារមិនត្រឹមត្រូវ (No cells array found)");
+      }
+      currentNotebookData = nb;
+
+      // Stats
+      const totalCells = nb.cells.length;
+      const codeCells = nb.cells.filter(c => c.cell_type === "code").length;
+      const mdCells = nb.cells.filter(c => c.cell_type === "markdown").length;
+
+      uploadedFileName.innerText = file.name;
+      uploadedFileStats.innerText = `ទំហំ: ${fileSizeKB} KB | កោសិកា: ${totalCells} (${codeCells} Code, ${mdCells} Markdown)`;
+      cellCountBadge.innerText = totalCells;
+
+      // Smart Feature Detection
+      detectFeatures(nb);
+
+      // Render cell list
+      renderCellsPreview(nb.cells);
+
+      // UI Switch
+      dropZone.style.display = "none";
+      uploadedPanel.style.display = "flex";
+      appendLog(`📂 បាន Upload Notebook: ${file.name} (${totalCells} Cells)`, "info");
+    } catch (err) {
+      alert(`⚠️ មិនអាចអាន Notebook បានទេ: ${err.message}`);
+      appendLog(`❌ Error parsing notebook: ${err.message}`, "warn");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function detectFeatures(nb) {
+  detectedTagsRow.innerHTML = "";
+  const allText = nb.cells.map(c => {
+    if (Array.isArray(c.source)) return c.source.join("");
+    return String(c.source || "");
+  }).join("\n").toLowerCase();
+
+  const features = [];
+  if (allText.includes("torch") || allText.includes("nn.module")) features.push({ name: "PyTorch", color: "#f43f5e" });
+  if (allText.includes("cuda") || allText.includes("gpu")) features.push({ name: "CUDA/GPU", color: "#10b981" });
+  if (allText.includes("lora") || allText.includes("peft")) features.push({ name: "LoRA Fine-Tune", color: "#f59e0b" });
+  if (allText.includes("timm") || allText.includes("visiontransformer")) features.push({ name: "ViT / timm", color: "#38bdf8" });
+  if (allText.includes("huggingface") || allText.includes("datasets")) features.push({ name: "Hugging Face", color: "#fbbf24" });
+  if (allText.includes("autocast") || allText.includes("amp")) features.push({ name: "Mixed Precision (AMP)", color: "#a855f7" });
+  if (allText.includes("keepalive") || allText.includes("colab-connect")) features.push({ name: "Keep-Alive Injected", color: "#34d399" });
+
+  if (features.length === 0) {
+    features.push({ name: "Jupyter Notebook", color: "#38bdf8" });
+  }
+
+  features.forEach(f => {
+    const span = document.createElement("span");
+    span.className = "detect-tag";
+    span.style.borderColor = f.color;
+    span.style.color = f.color;
+    span.innerText = `🏷️ ${f.name}`;
+    detectedTagsRow.appendChild(span);
+  });
+}
+
+function renderCellsPreview(cells) {
+  cellsListContainer.innerHTML = "";
+  cells.forEach((cell, idx) => {
+    const card = document.createElement("div");
+    card.className = "cell-card";
+
+    const top = document.createElement("div");
+    top.className = "cell-card-top";
+
+    const typeSpan = document.createElement("span");
+    typeSpan.className = `cell-type-badge ${cell.cell_type}`;
+    typeSpan.innerText = `[${idx + 1}] ${cell.cell_type.toUpperCase()}`;
+
+    const linesCount = Array.isArray(cell.source) ? cell.source.length : String(cell.source || "").split("\n").length;
+    const lenSpan = document.createElement("span");
+    lenSpan.innerText = `${linesCount} បន្ទាត់`;
+
+    top.appendChild(typeSpan);
+    top.appendChild(lenSpan);
+
+    const pre = document.createElement("pre");
+    pre.className = "cell-code-preview";
+    const codeText = Array.isArray(cell.source) ? cell.source.join("") : String(cell.source || "");
+    pre.innerText = codeText.slice(0, 350) + (codeText.length > 350 ? "\n... (ច្រើនទៀត)" : "");
+
+    card.appendChild(top);
+    card.appendChild(pre);
+    cellsListContainer.appendChild(card);
+  });
+}
+
+// Reset Upload
+if (removeUploadedFileBtn) {
+  removeUploadedFileBtn.addEventListener("click", () => {
+    currentNotebookData = null;
+    currentNotebookFilename = "";
+    colabFileInput.value = "";
+    uploadedPanel.style.display = "none";
+    dropZone.style.display = "block";
+    notebookCellsViewer.style.display = "none";
+  });
+}
+
+// Toggle cell viewer
+if (toggleCellViewerBtn) {
+  toggleCellViewerBtn.addEventListener("click", () => {
+    if (notebookCellsViewer.style.display === "none") {
+      notebookCellsViewer.style.display = "flex";
+      toggleCellViewerBtn.innerText = "❌ បិទមើលកោសិកា";
+    } else {
+      notebookCellsViewer.style.display = "none";
+      toggleCellViewerBtn.innerHTML = `👁️ មើលកោសិកាកូដ (<span id="cellCountBadge">${currentNotebookData ? currentNotebookData.cells.length : 0}</span>)`;
+    }
+  });
+}
+
+if (collapseCellsBtn) {
+  collapseCellsBtn.addEventListener("click", () => {
+    notebookCellsViewer.style.display = "none";
+    if (toggleCellViewerBtn) {
+      toggleCellViewerBtn.innerHTML = `👁️ មើលកោសិកាកូដ (<span id="cellCountBadge">${currentNotebookData ? currentNotebookData.cells.length : 0}</span>)`;
+    }
+  });
+}
+
+// Copy All Code
+if (copyAllCodeBtn) {
+  copyAllCodeBtn.addEventListener("click", () => {
+    if (!currentNotebookData) return;
+    const allCode = currentNotebookData.cells
+      .filter(c => c.cell_type === "code")
+      .map(c => Array.isArray(c.source) ? c.source.join("") : String(c.source || ""))
+      .join("\n\n# ==========================================\n\n");
+
+    navigator.clipboard.writeText(allCode).then(() => {
+      copyAllCodeBtn.innerText = "✅ បានចម្លងជោគជ័យ!";
+      setTimeout(() => {
+        copyAllCodeBtn.innerText = "📋 ចម្លងកូដទាំងអស់";
+      }, 2000);
+      appendLog("📋 បានចម្លងកូដ Python ទាំងអស់ចូលក្នុង Clipboard!", "success");
+    });
+  });
+}
+
+// Inject Keep-Alive & Download
+if (injectKeepAliveBtn) {
+  injectKeepAliveBtn.addEventListener("click", () => {
+    if (!currentNotebookData) return;
+
+    // Clone notebook
+    const updatedNb = JSON.parse(JSON.stringify(currentNotebookData));
+
+    // Keep-alive cell
+    const keepAliveCell = {
+      cell_type: "code",
+      execution_count: null,
+      metadata: { id: "colab_keepalive_24h_injected" },
+      outputs: [],
+      source: [
+        "# =========================================================================\n",
+        "# 🛡️ COLAB 24H ANTI-DISCONNECT KEEP-ALIVE (Injected by Colab Keeper)\n",
+        "# ដំណើការស្វ័យប្រវត្តិដើម្បីការពារកុំឱ្យ Google Colab ដាច់ Connection\n",
+        "# =========================================================================\n",
+        "import IPython\n",
+        "IPython.display.display(IPython.display.Javascript('''\n",
+        "  (function() {\n",
+        "    let count = 0;\n",
+        "    const notify = document.createElement('div');\n",
+        "    notify.style.cssText = 'position:fixed;top:14px;right:14px;z-index:999999;background:#10b981;color:#fff;padding:8px 16px;border-radius:8px;font-family:sans-serif;font-size:12px;font-weight:bold;box-shadow:0 4px 14px rgba(0,0,0,0.35);';\n",
+        "    notify.innerText = '⚡ Colab Keep-Alive Active!';\n",
+        "    document.body.appendChild(notify);\n",
+        "    setInterval(function() {\n",
+        "      const btn = document.querySelector('colab-connect-button') || document.querySelector('#connect') || document.querySelector('colab-toolbar-button');\n",
+        "      if (btn) { btn.click(); count++; notify.innerText = '⚡ Keep-Alive Active (' + count + ' pings)'; }\n",
+        "    }, 60000);\n",
+        "    console.log('⚡ Colab Keep-Alive Active!');\n",
+        "  })();\n",
+        "'''))\n"
+      ]
+    };
+
+    // Prepend to cells
+    updatedNb.cells.unshift(keepAliveCell);
+
+    // Create Download Blob
+    const blob = new Blob([JSON.stringify(updatedNb, null, 2)], { type: "application/json" });
+    const downloadUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const newName = currentNotebookFilename.replace(".ipynb", "") + "_with_keepalive.ipynb";
+    a.href = downloadUrl;
+    a.download = newName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(downloadUrl);
+
+    appendLog(`🛡️ បានចាក់បញ្ចូល Keep-Alive និងទាញយក: ${newName}`, "success");
+    injectKeepAliveBtn.innerText = "✅ បានបញ្ចូល & ទាញយករួច!";
+    setTimeout(() => {
+      injectKeepAliveBtn.innerText = "🛡️ បញ្ចូល Keep-Alive + ទាញយក";
+    }, 2500);
+  });
+}
 
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
@@ -402,3 +675,4 @@ window.addEventListener("DOMContentLoaded", () => {
   toggleSoundBtn.addEventListener("click", toggleAudio);
   appendLog("🚀 Colab Keeper Dashboard ដំណើរការជោគជ័យ!", "success");
 });
+
