@@ -730,6 +730,37 @@ if (toggleFullscreenBtn && webviewContainer) {
   });
 }
 
+// Colab Cell Execution Simulator
+window.toggleCellRun = function(btn, outputId) {
+  const out = document.getElementById(outputId);
+  btn.classList.add("running");
+  btn.innerText = "⏳";
+  setTimeout(() => {
+    btn.classList.remove("running");
+    btn.innerText = "✓";
+    if (out) out.style.display = "block";
+    appendLog(`⚡ បានដំណើរការ Cell [${outputId}] ជោគជ័យ!`, "success");
+    setTimeout(() => { btn.innerText = "▶"; }, 2000);
+  }, 600);
+};
+
+const colabRunAllBtn = document.getElementById("colabRunAllBtn");
+if (colabRunAllBtn) {
+  colabRunAllBtn.addEventListener("click", () => {
+    colabRunAllBtn.innerText = "⏳ Running All Cells...";
+    const playButtons = document.querySelectorAll(".colab-play-btn");
+    playButtons.forEach((btn, i) => {
+      setTimeout(() => {
+        btn.click();
+      }, (i + 1) * 700);
+    });
+    setTimeout(() => {
+      colabRunAllBtn.innerText = "▶ Run all";
+      appendLog("🚀 បាន Run All កោសិកាទាំងអស់ក្នុង Colab Workspace!", "success");
+    }, (playButtons.length + 1) * 750);
+  });
+}
+
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
   updateScript(60);

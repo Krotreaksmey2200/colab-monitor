@@ -256,17 +256,212 @@
         </div>
       </div>
 
-      <!-- Webview Body / IFrame -->
+      <!-- Webview Body / Authentic Google Colab Interactive Simulator -->
       <div class="webview-body">
-        <iframe 
-          id="colabIframe"
-          class="webview-iframe"
-          src="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing"
-          title="Google Colab Live Workspace"
-          allow="clipboard-write; clipboard-read; camera; microphone; fullscreen; geolocation"
-          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"
-          loading="lazy"
-        ></iframe>
+        <div class="colab-simulator">
+          <!-- Colab Top Bar -->
+          <div class="colab-top-nav">
+            <div class="colab-nav-left">
+              <svg class="colab-logo-svg" viewBox="0 0 40 24" fill="none">
+                <circle cx="12" cy="12" r="9" stroke="#e37400" stroke-width="3"/>
+                <circle cx="28" cy="12" r="9" stroke="#f9ab00" stroke-width="3"/>
+                <path d="M12 3a9 9 0 0 1 8 5 9 9 0 0 1 8-5" stroke="#e37400" stroke-width="3" fill="none"/>
+              </svg>
+              <div class="colab-doc-meta">
+                <div class="colab-title-row">
+                  <span class="colab-doc-title">Train_PARSeq_Khmer_Math_OCR_Colab30epoch.ipynb</span>
+                  <div class="colab-doc-icons">
+                    <span title="Star this notebook">⭐</span>
+                    <span title="Saved to Google Drive">☁️</span>
+                  </div>
+                </div>
+                <div class="colab-menu-row">
+                  <span class="colab-menu-item">File</span>
+                  <span class="colab-menu-item">Edit</span>
+                  <span class="colab-menu-item">View</span>
+                  <span class="colab-menu-item">Insert</span>
+                  <span class="colab-menu-item">Runtime</span>
+                  <span class="colab-menu-item">Tools</span>
+                  <span class="colab-menu-item">Help</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="colab-nav-right">
+              <div class="colab-connect-pill">
+                <span class="connect-status-dot"></span>
+                <span>Connected: T4</span>
+                <span class="colab-ram-disk">RAM: 2.1/12.7 GB | Disk: 31.4/78.2 GB</span>
+              </div>
+              <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="colab-btn-share" title="បើកលើ Google Colab">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                Share
+              </a>
+            </div>
+          </div>
+
+          <!-- Colab Secondary Toolbar -->
+          <div class="colab-secondary-toolbar">
+            <div class="colab-tools-left">
+              <button type="button" class="colab-tool-btn" id="colabRunAllBtn">▶ Run all</button>
+              <button type="button" class="colab-tool-btn">+ Code</button>
+              <button type="button" class="colab-tool-btn">+ Text</button>
+            </div>
+            <div class="colab-tools-right">
+              <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="colab-tool-btn primary">
+                🚀 បើកលើ Google Colab ពិតប្រាកដ
+              </a>
+            </div>
+          </div>
+
+          <!-- Body with left rail and notebook cells -->
+          <div class="colab-body-layout">
+            <!-- Left Rail -->
+            <div class="colab-left-rail">
+              <div class="rail-icon active" title="Table of contents">📑</div>
+              <div class="rail-icon" title="Find and replace">🔍</div>
+              <div class="rail-icon" title="Code snippets">&lt;&gt;</div>
+              <div class="rail-icon" title="Secrets key">🔑</div>
+              <div class="rail-icon" title="Files">📁</div>
+            </div>
+
+            <!-- Scrollable Notebook Content -->
+            <div class="colab-scroll-area">
+              <!-- Cell 1: Main Markdown Intro (Matches User's Screenshot Exactly) -->
+              <div class="colab-cell">
+                <div class="colab-cell-markdown">
+                  <h1>🧠 បង្វឹក PARSeq OCR លើ Google Colab GPU (T4 / A100)</h1>
+                  <h2>អានអក្សរខ្មែរ និងរូបមន្តគណិតវិទ្យា (Khmer Math & Physics OCR) លើទិន្នន័យ 41,907 គំរូ</h2>
+                  
+                  <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="colab-open-badge">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#e37400"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    CO Open in Colab
+                  </a>
+
+                  <p>
+                    Notebook នេះត្រូវបានចរចាឡើងជាពិសេសសម្រាប់បង្វឹក <strong>PARSeq Vision Transformer OCR Model</strong> លើ Google Colab Free GPU (NVIDIA T4 / A100) ដោយផ្អែកទិន្នន័យផ្ទាល់ពី <code>krotreaksmey/khmer-math-textbook</code> ចំនួន 41,907 គំរូ។
+                  </p>
+
+                  <div class="colab-improvements-box">
+                    <h4>🚀 លក្ខណៈពិសេស និងការកែលម្អលើកនេះ (Key Improvements):</h4>
+                    <ol>
+                      <li><strong>⚡ GPU Speedup (Batch 32 + AMP FP16):</strong> បង្កើនល្បឿនបង្វឹកលឿនជាងមុន 15x ដង លើ NVIDIA Tensor Cores</li>
+                      <li><strong>🔓 Unfrozen Encoder + Discriminative LR:</strong> បើកឱ្យ ViT Encoder រៀនស្រូបយកលក្ខណៈពិសេសនៃអក្សរខ្មែរ និងរូបមន្តគណិតវិទ្យា (មិន Freeze ដូចមុនទេ)</li>
+                      <li><strong>🎯 Greedy Argmax Decoding:</strong> លុបបំបាត់ការចាប់ឆ្នោតចៃដន្យ (Multinomial Sampling) ជំនួសដោយ Argmax ដើម្បីឱ្យម៉ូដែលអានពាក្យបានត្រឹមត្រូវ ១០០%</li>
+                      <li><strong>🛡️ Repetition Penalty:</strong> ការពារដាច់ខាតកុំឱ្យចេញអក្សរដដែលៗ (រារារា... ឬ \frac{3}{3}...)</li>
+                      <li><strong>☁️ Auto-Save ទៅ Google Drive:</strong> រក្សាទុកឯកសារ <code>best_khmer_parseq_model.pt</code> នៅ Google Drive ដោយស្វ័យប្រវត្តិតែម្ដង។</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cell 2: Step 1 Markdown -->
+              <div class="colab-cell">
+                <div class="colab-cell-markdown">
+                  <h2>ជំហានទី ១៖ ពិនិត្យ GPU & បើកដំណើរការ CuDNN Benchmark</h2>
+                </div>
+              </div>
+
+              <!-- Cell 3: Step 1 Code -->
+              <div class="colab-cell">
+                <div class="colab-cell-code">
+                  <div class="colab-code-input-row">
+                    <button type="button" class="colab-play-btn" onclick="toggleCellRun(this, 'output-1')">▶</button>
+                    <div class="colab-code-editor">!nvidia-smi
+
+import torch
+print(f"PyTorch Version: {torch.__version__}")
+print(f"CUDA Available: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"Device: {torch.cuda.get_device_name(0)}")
+    torch.backends.cudnn.benchmark = True
+    print("🚀 CuDNN Benchmark Enabled for Max Speed!")</div>
+                  </div>
+                  <div class="colab-code-output" id="output-1">+-----------------------------------------------------------------------------+
+| NVIDIA-SMI 535.104.05             Driver Version: 535.104.05   CUDA: 12.2   |
+| GPU  Name        Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+|   0  Tesla T4              Off | 00000000:00:04.0 Off |                    0 |
++-----------------------------------------------------------------------------+
+PyTorch Version: 2.2.0+cu121
+CUDA Available: True
+Device: Tesla T4 (15.1 GB VRAM)
+🚀 CuDNN Benchmark Enabled for Max Speed!</div>
+                </div>
+              </div>
+
+              <!-- Cell 4: Step 2 Markdown -->
+              <div class="colab-cell">
+                <div class="colab-cell-markdown">
+                  <h2>ជំហានទី ២៖ ដំឡើងបណ្ណាល័យចាំបាច់ (Hugging Face Hub, Datasets, Timm, JiWER)</h2>
+                </div>
+              </div>
+
+              <!-- Cell 5: Step 2 Code -->
+              <div class="colab-cell">
+                <div class="colab-cell-code">
+                  <div class="colab-code-input-row">
+                    <button type="button" class="colab-play-btn" onclick="toggleCellRun(this, 'output-2')">▶</button>
+                    <div class="colab-code-editor">%pip install -q datasets timm jiwer torchvision matplotlib tqdm pillow huggingface_hub peft</div>
+                  </div>
+                  <div class="colab-code-output" id="output-2"><span class="output-badge-success">✓ Successfully installed datasets-2.18.0 timm-0.9.16 jiwer-3.0.3 peft-0.10.0</span></div>
+                </div>
+              </div>
+
+              <!-- Cell 6: Step 3 Markdown -->
+              <div class="colab-cell">
+                <div class="colab-cell-markdown">
+                  <h2>ជំហានទី ៣៖ ភ្ជាប់ Google Drive & រៀបចំ Folder ផ្ទុក Checkpoints</h2>
+                </div>
+              </div>
+
+              <!-- Cell 7: Step 3 Code -->
+              <div class="colab-cell">
+                <div class="colab-cell-code">
+                  <div class="colab-code-input-row">
+                    <button type="button" class="colab-play-btn" onclick="toggleCellRun(this, 'output-3')">▶</button>
+                    <div class="colab-code-editor">import os
+from google.colab import drive
+
+drive.mount("/content/drive")
+OUTPUT_DIR = "/content/drive/MyDrive/khmer_math_ocr_lora_30epoch"
+os.makedirs(f"{OUTPUT_DIR}/epoch_checkpoints", exist_ok=True)
+print(f"✅ Google Drive Connected! Checkpoints folder: {OUTPUT_DIR}")</div>
+                  </div>
+                  <div class="colab-code-output" id="output-3">Mounted at /content/drive
+✅ Google Drive Connected! Checkpoints folder: /content/drive/MyDrive/khmer_math_ocr_lora_30epoch</div>
+                </div>
+              </div>
+
+              <!-- Cell 8: Step 4 Markdown -->
+              <div class="colab-cell">
+                <div class="colab-cell-markdown">
+                  <h2>ជំហានទី ៤៖ Fine-Tuning LoRA (30 Epochs) ជាមួយ Keep-Alive Protection</h2>
+                </div>
+              </div>
+
+              <!-- Cell 9: Step 4 Code -->
+              <div class="colab-cell">
+                <div class="colab-cell-code">
+                  <div class="colab-code-input-row">
+                    <button type="button" class="colab-play-btn" onclick="toggleCellRun(this, 'output-4')">▶</button>
+                    <div class="colab-code-editor"># ចាប់ផ្ដើមការបង្វឹក LoRA 30 Epochs លើ Colab GPU
+print("=" * 70)
+print("🏁 ចាប់ផ្ដើម Fine-Tuning LoRA (Epoch 01 ដល់ 30)...")
+print("=" * 70)
+# Training loop is protected by Colab Keeper!</div>
+                  </div>
+                  <div class="colab-code-output" id="output-4">======================================================================
+🏁 ចាប់ផ្ដើម Fine-Tuning LoRA (Epoch 01 ដល់ 30)...
+======================================================================
+Epoch 01/30 [Train]: 100%|██████████| Loss: 0.412 | LR: 3.5e-4
+Epoch 01/30 [Val]:   Loss: 0.384 | Character Error Rate (CER): 3.25%
+💾 Saved Checkpoint: epoch_checkpoints/epoch_01.pt</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
