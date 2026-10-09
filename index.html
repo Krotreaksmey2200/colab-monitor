@@ -235,8 +235,11 @@
         </div>
 
         <div class="chrome-actions">
-          <button type="button" class="btn btn-sm btn-primary" id="openPopupColabBtn" title="បើកជាផ្ទាំង App Window ស្គាល់ Google Login ស្រាប់ មិនបាច់ Login ឡើងវិញ">
-            🪟 បើកជា App Window (ស្គាល់ Login ស្រាប់)
+          <button type="button" class="btn btn-sm btn-primary" id="openSplitScreenBtn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 700;" title="បើក Colab ពិតប្រាកដនៅលើអេក្រង់ស្របគ្នាជាមួយ Dashboard ដំណើរការបានគ្រប់យ៉ាង">
+            🖥️ បើក Split-Screen (ដំណើរការ ១០០% គ្រប់យ៉ាង)
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" id="openPopupColabBtn" title="បើកជាផ្ទាំង App Window ស្គាល់ Google Login ស្រាប់ មិនបាច់ Login ឡើងវិញ">
+            🪟 App Window
           </button>
           <a 
             href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" 
@@ -246,7 +249,7 @@
             id="openTabColabBtn"
             title="បើកក្នុង Tab ថ្មី ស្គាល់ Google Login ស្រាប់"
           >
-            🚀 បើកក្នុង Tab ថ្មី
+            🚀 Tab ថ្មី
           </a>
           <button type="button" class="btn btn-sm btn-outline" id="copyColabUrlBtn" title="ចម្លង Link Colab">
             📋 Copy Link
@@ -261,17 +264,17 @@
       <div class="iframe-security-helper" id="iframeHelperBar">
         <div class="helper-text">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-            <span style="font-size:1.1rem;">⚠️</span>
-            <strong style="color:#fbbf24; font-size:0.88rem;">ហេតុអ្វីពេលចុច Run ក្នុង Frame វាទាមទារ Login?</strong>
+            <span style="font-size:1.1rem;">💡</span>
+            <strong style="color:#fbbf24; font-size:0.88rem;">វិធីមើល និងបញ្ជា Google Colab ពិតប្រាកដឱ្យដំណើរការបានគ្រប់យ៉ាង ១០០%៖</strong>
           </div>
           <p style="margin:0; font-size:0.82rem; color:#cbd5e1; line-height:1.5;">
-            នៅក្នុង Iframe (ការបង្កប់លើ Website ក្រៅ) Browser បានបិទ Third-Party Cookies ដូច្នេះ Google មិនស្គាល់ Account របស់អ្នកឡើយ។<br>
-            👉 <strong>ដំណោះស្រាយងាយស្រួលបំផុត៖</strong> ចុចប៊ូតុង <strong>[🪟 បើកជា App Window]</strong> ឬ <strong>[🚀 បើកក្នុង Tab ថ្មី]</strong> នោះ Colab នឹង <strong>ស្គាល់ Google Login របស់អ្នកស្រាប់តែម្ដង (មិនបាច់ Login ឡើងវិញទេ)</strong> ហើយអាចចុច Run GPU បានភ្លាមៗ!
+            ដោយសារ Google Colab ហាមឃាត់ការបញ្ជាកូដ និង Login ក្នុង Frame (Error 401), ដំណោះស្រាយល្អឥតខ្ចោះគឺ <strong>របៀប Split-Screen Workspace</strong>៖<br>
+            👉 ចុចប៊ូតុង <strong>[🖥️ បើក Split-Screen Workspace]</strong> វានឹងរៀបចំអេក្រង់ស្វ័យប្រវត្តិ៖ <strong>Colab Keeper នៅខាងឆ្វេង (ការពារកុំឱ្យដាច់)</strong> និង <strong>Google Colab ពិតប្រាកដនៅខាងស្តាំ (ភ្ជាប់ Gmail ស្រាប់ បញ្ជាកូដបានគ្រប់យ៉ាង)</strong>!
           </p>
         </div>
         <div class="helper-actions">
-          <button type="button" class="btn btn-primary" id="openAppWindowBtn" style="font-size:0.85rem; padding:8px 16px;">
-            🪟 បើកជា App Window (Run ភ្លាមៗ មិនបាច់ Login)
+          <button type="button" class="btn btn-primary" id="openSplitScreenBtn2" style="font-size:0.85rem; padding:8px 16px; font-weight:700;">
+            🖥️ បើក Split-Screen Workspace (Colab ពេញសិទ្ធិ)
           </button>
           <a href="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-colab" style="font-size:0.85rem; padding:8px 16px;">
             🚀 បើកក្នុង Tab ថ្មី

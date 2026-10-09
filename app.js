@@ -820,8 +820,34 @@ function toggleRawIframe() {
     appendLog("👁️ បានលាក់ Iframe!", "info");
   }
 }
-window.toggleRawIframe = toggleRawIframe;
-window.switchColabMode = switchColabMode;
+function openSplitScreenWorkspace() {
+  const authVal = gmailAccountSelect ? gmailAccountSelect.value : "0";
+  const colabUrl = `https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?authuser=${authVal}`;
+  const screenW = window.screen.availWidth || window.innerWidth || 1440;
+  const screenH = window.screen.availHeight || window.innerHeight || 900;
+  const halfW = Math.max(680, Math.floor(screenW / 2));
+
+  // Position current window on left
+  try {
+    window.resizeTo(halfW, screenH);
+    window.moveTo(0, 0);
+  } catch (e) {}
+
+  // Open real Google Colab on right half
+  window.open(
+    colabUrl,
+    "GoogleColabLiveWorkspace",
+    `width=${halfW},height=${screenH},left=${halfW},top=0,menubar=no,status=no,toolbar=no,location=yes,scrollbars=yes,resizable=yes`
+  );
+
+  appendLog("🖥️ បានបើករបៀប Split-Screen: Colab Keeper (ឆ្វេង) + Google Colab ពិតប្រាកដ (ស្តាំ) ដំណើរការ ១០០%!", "success");
+}
+
+const openSplitScreenBtn = document.getElementById("openSplitScreenBtn");
+const openSplitScreenBtn2 = document.getElementById("openSplitScreenBtn2");
+if (openSplitScreenBtn) openSplitScreenBtn.addEventListener("click", openSplitScreenWorkspace);
+if (openSplitScreenBtn2) openSplitScreenBtn2.addEventListener("click", openSplitScreenWorkspace);
+window.openSplitScreenWorkspace = openSplitScreenWorkspace;
 
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {
