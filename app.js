@@ -790,14 +790,38 @@ function switchColabMode(mode) {
 if (modeIframeBtn) modeIframeBtn.addEventListener("click", () => switchColabMode("iframe"));
 if (modeReplicaBtn) modeReplicaBtn.addEventListener("click", () => switchColabMode("replica"));
 
-function openColabAsApp() {
-  const url = colabUrlInput ? colabUrlInput.value.trim() : "https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing";
-  window.open(url, "GoogleColabLiveApp", "width=1280,height=850,menubar=no,status=no,toolbar=no,location=yes,scrollbars=yes,resizable=yes");
-  appendLog("🪟 បានបើក Colab ជា Real App Window ដាច់ដោយឡែក (ដំណើរការ ១០០%)!", "success");
-}
+const gmailAccountSelect = document.getElementById("gmailAccountSelect");
 
+function launchWithSelectedGmail() {
+  const authVal = gmailAccountSelect ? gmailAccountSelect.value : "0";
+  let baseUrl = "https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK";
+  const finalUrl = `${baseUrl}?authuser=${authVal}`;
+  window.open(finalUrl, "GoogleColabLiveApp", "width=1280,height=850,menubar=no,status=no,toolbar=no,location=yes,scrollbars=yes,resizable=yes");
+  appendLog(`🚀 បានបើក Colab ជាមួយ Gmail (Account ${authVal}) ស្គាល់ Login ស្រាប់!`, "success");
+}
+window.launchWithSelectedGmail = launchWithSelectedGmail;
+
+function openColabAsApp() {
+  launchWithSelectedGmail();
+}
 if (openAppWindowBtn) openAppWindowBtn.addEventListener("click", openColabAsApp);
 window.openColabAsApp = openColabAsApp;
+
+function toggleRawIframe() {
+  const ifr = document.getElementById("colabIframe");
+  if (!ifr) return;
+  if (ifr.style.display === "none") {
+    const authVal = gmailAccountSelect ? gmailAccountSelect.value : "0";
+    ifr.src = `https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?authuser=${authVal}`;
+    ifr.style.display = "block";
+    appendLog("👁️ បានបើកបង្ហាញ Iframe ផ្ទាល់!", "info");
+  } else {
+    ifr.style.display = "none";
+    appendLog("👁️ បានលាក់ Iframe!", "info");
+  }
+}
+window.toggleRawIframe = toggleRawIframe;
+window.switchColabMode = switchColabMode;
 
 // Initialize
 window.addEventListener("DOMContentLoaded", () => {

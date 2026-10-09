@@ -226,11 +226,11 @@
 
         <!-- Mode Toggle Tabs -->
         <div class="view-mode-tabs">
-          <button type="button" class="tab-btn active" id="modeIframeBtn" title="View ផ្ទាំង Colab ពិតប្រាកដក្នុង Iframe">
-            🌐 Live Colab (ពិតប្រាកដ)
+          <button type="button" class="tab-btn active" id="modeReplicaBtn" title="View ផ្ទាំងត្រាប់តាម Colab ដោយមិនជាប់ Block">
+            📱 Interactive Preview
           </button>
-          <button type="button" class="tab-btn" id="modeReplicaBtn" title="View ផ្ទាំងត្រាប់តាម Colab ដោយមិនជាប់ Block">
-            📱 Interactive Replica
+          <button type="button" class="tab-btn" id="modeIframeBtn" title="View ផ្ទាំង Colab + Gmail Login Launcher">
+            🌐 Real Colab + Gmail
           </button>
         </div>
 
@@ -281,21 +281,51 @@
 
       <!-- Webview Body / Dual Views (Real Iframe & Authentic Interactive Simulator) -->
       <div class="webview-body">
-        <!-- View A: Real Google Colab Iframe -->
-        <div id="realColabIframeView" style="width: 100%; height: 100%;">
-          <iframe 
-            id="colabIframe"
-            class="webview-iframe-view"
-            src="https://colab.research.google.com/drive/1OMZLKPw7Lr17xokY0q5_5UYUW7Y38VNK?usp=sharing"
-            title="Google Colab Live Workspace"
-            allow="clipboard-write; clipboard-read; camera; microphone; fullscreen; geolocation"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"
-            loading="lazy"
-          ></iframe>
+        <!-- View A: Real Google Colab Gmail Launcher & Iframe -->
+        <div id="realColabIframeView" style="width: 100%; height: 100%; display: none;">
+          <div class="colab-401-notice">
+            <div class="notice-icon">🔒</div>
+            <h3>Google Colab + Gmail Login Launcher</h3>
+            <p>
+              ដោយសារគោលការណ៍សុវត្ថិភាព <strong>Google OAuth</strong> បានរារាំងការ Login ក្នុង Frame (Error 401) ដើម្បីការពារសុវត្ថិភាពគណនីរបស់អ្នក។<br>
+              ប៉ុន្តែអ្នកអាចបើកដំណើរការវាជាមួយ <strong>គណនី Gmail ដែលអ្នកកំពុង Login ស្រាប់</strong> ដោយគ្រាន់តែជ្រើសរើស Gmail ហើយចុចប៊ូតុងខាងក្រោម៖
+            </p>
+            <div class="gmail-launch-row">
+              <select id="gmailAccountSelect" class="gmail-select">
+                <option value="0">👤 Gmail បច្ចុប្បន្ន (Account 0 - មេ)</option>
+                <option value="1">👤 Gmail ទី ២ (Account 1)</option>
+                <option value="2">👤 Gmail ទី ៣ (Account 2)</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-lg" onclick="launchWithSelectedGmail()">
+                🚀 បើកជាមួយ Gmail នេះភ្លាមៗ (ស្គាល់ Login ស្រាប់ ១០០%)
+              </button>
+            </div>
+            <div class="tip-box">
+              💡 <strong>ដំណើរការស្វ័យប្រវត្តិ៖</strong> Colab នឹងបើកឡើងជា App Window ដោយស្គាល់ Gmail របស់អ្នកស្រាប់តែម្ដង មិនបាច់ Login ឡើងវិញទេ! ហើយ Tab នៃ Website នេះនឹងបន្តការពារកុំឱ្យដាច់ ២៤ ម៉ោង!
+            </div>
+            <div style="margin-top: 10px;">
+              <button type="button" class="btn btn-sm btn-outline" onclick="switchColabMode('replica')">
+                📱 ប្ដូរទៅមើល Interactive Preview វិញ
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="toggleRawIframe()">
+                👁️ បង្ហាញ Iframe ផ្ទាល់ (សម្រាប់អ្នកដំឡើង Extension)
+              </button>
+            </div>
+            <iframe 
+              id="colabIframe"
+              class="webview-iframe-view"
+              src=""
+              style="display: none; height: 500px; margin-top: 15px; border-radius: 8px;"
+              title="Google Colab Live Workspace"
+              allow="clipboard-write; clipboard-read; camera; microphone; fullscreen; geolocation"
+              sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads"
+              loading="lazy"
+            ></iframe>
+          </div>
         </div>
 
-        <!-- View B: Authentic Google Colab Interactive Simulator (Initially hidden) -->
-        <div class="colab-simulator" id="replicaColabView" style="display: none;">
+        <!-- View B: Authentic Google Colab Interactive Simulator (Default View) -->
+        <div class="colab-simulator" id="replicaColabView" style="display: flex;">
           <!-- Colab Top Bar -->
           <div class="colab-top-nav">
             <div class="colab-nav-left">
